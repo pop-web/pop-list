@@ -25,6 +25,7 @@
               <input
                 type="checkbox"
                 class="leading-tight focus:outline-none cursor-pointer"
+                @click="completeTodo(todo)"
               />
             </label>
             <button
@@ -63,6 +64,28 @@
           </svg>
           <span>完了済み</span>
         </button>
+        <ul>
+          <li v-for="todo in completeList" :key="todo.id" class="mt-3">
+            <div
+              class="w-full bg-white hover:bg-gray-200 rounded inline-flex items-center cursor-pointer"
+            >
+              <label
+                class="w-10 h-10 flex items-center justify-center cursor-pointer"
+              >
+                <input
+                  type="checkbox"
+                  class="leading-tight focus:outline-none cursor-pointer"
+                />
+              </label>
+              <button
+                type="button"
+                class="view-todo w-full p-4 text-left focus:outline-none focus:box-shadow"
+              >
+                {{ todo.comment }}
+              </button>
+            </div>
+          </li>
+        </ul>
       </div>
     </div>
   </div>
@@ -81,22 +104,27 @@ export default {
   data() {
     return {
       // todoリスト
-      todos: [
-        { id: 0, comment: 'あいうえお', state: 0 },
-        { id: 1, comment: 'かきくけこ', state: 1 },
-        { id: 2, comment: 'んんんん', state: 0 }
-      ],
+      todos: [],
       // 完了リスト
-      complieteTodo: [],
+      completeList: [],
       editedTodo: null,
+      todoId: 0,
       newTodo: '',
       isCompleteOpen: false
     }
   },
+  created() {
+    this.todoId = this.todos.length
+  },
   methods: {
     // リストへ追加
     addTodo() {
-      this.todos.push(this.newTodo)
+      this.todos.push({
+        id: this.todoId++,
+        comment: this.newTodo,
+        state: 0
+      })
+      this.newTodo = ''
     },
     compListOpen() {
       this.isCompleteOpen = !this.isCompleteOpen
@@ -104,12 +132,16 @@ export default {
     editTodo(todo) {
       // this.beforeEditCache = todo.comment
       this.editedTodo = todo
+    },
+    completeTodo(todo) {
+      this.todos.splice(this.todos.indexOf(todo), 1)
+      this.completeList.push(todo)
     }
   }
 }
 </script>
 
-<style>
+<style scoped>
 .editing .view-todo {
   display: none;
 }
