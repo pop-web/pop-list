@@ -78,12 +78,12 @@
             placeholder="＋ ToDoを追加…"
           />
         </form>
-        <ul>
+        <transition-group name="todo-list" tag="ul">
           <li
             v-for="todo in todos"
             :key="todo.id"
             class="mt-3"
-            :class="{ editing: todo == editedTodo }"
+            :class="{ editing: todo == editedTodo, 'todo-list-item': true }"
           >
             <div
               class="w-full bg-white hover:bg-gray-200 rounded inline-flex items-center cursor-pointer"
@@ -113,9 +113,10 @@
               />
             </div>
           </li>
-        </ul>
+        </transition-group>
         <div class="text-center mt-5">
           <button
+            v-if="isCompleteList"
             class="bg-black bg-opacity-50 rounded px-5 py-1 text-white inline-flex items-center"
             @click="compListOpen"
           >
@@ -188,6 +189,15 @@ export default {
       searchWord: ''
     }
   },
+  computed: {
+    isCompleteList() {
+      if (this.completeList.length) {
+        return true
+      } else {
+        return false
+      }
+    }
+  },
   created() {
     this.todoId = this.todos.length
   },
@@ -227,5 +237,15 @@ export default {
 .search {
   top: 0.5rem;
   left: 0.5rem;
+}
+.todo-list-item {
+  transition: all 0.5s;
+}
+.todo-list-enter,
+.todo-list-leave-to {
+  opacity: 0;
+  transform: translateX(30px);
+}
+.todo-list-leave-active {
 }
 </style>
