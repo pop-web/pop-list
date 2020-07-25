@@ -208,6 +208,7 @@ export default {
       .collection('todos')
       .orderBy('createdAt', 'asc')
       .onSnapshot((roomsSnapShot) => {
+        this.todos = []
         roomsSnapShot.forEach((doc) => {
           this.todos.push({
             id: doc.id,
