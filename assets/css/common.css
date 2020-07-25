@@ -1,0 +1,4 @@
+.body-class {
+  background: url('~@/assets/images/bg.jpg') center center / cover no-repeat
+    fixed;
+}

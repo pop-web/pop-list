@@ -136,8 +136,12 @@
             <span>完了済み</span>
           </button>
           <template v-if="isCompleteOpen">
-            <ul>
-              <li v-for="todo in completeList" :key="todo.id" class="mt-3">
+            <transition-group name="todo-list" tag="ul">
+              <li
+                v-for="todo in completeList"
+                :key="todo.id"
+                class="mt-3 todo-list-item"
+              >
                 <div
                   class="w-full bg-white hover:bg-gray-200 rounded inline-flex items-center cursor-pointer"
                 >
@@ -148,6 +152,7 @@
                       type="checkbox"
                       class="leading-tight focus:outline-none cursor-pointer"
                       :checked="todo.state"
+                      @click="cancelTodo(todo)"
                     />
                   </label>
                   <button
@@ -158,7 +163,7 @@
                   </button>
                 </div>
               </li>
-            </ul>
+            </transition-group>
           </template>
         </div>
       </div>
@@ -182,6 +187,7 @@ export default {
       todos: [],
       // 完了リスト
       completeList: [],
+      // 編集中のtodo
       editedTodo: null,
       todoId: 0,
       newTodo: '',
@@ -222,6 +228,11 @@ export default {
       todo.state = true
       this.todos.splice(this.todos.indexOf(todo), 1)
       this.completeList.push(todo)
+    },
+    cancelTodo(todo) {
+      todo.state = false
+      this.completeList.splice(this.completeList.indexOf(todo), 1)
+      this.todos.push(todo)
     }
   }
 }
@@ -244,8 +255,10 @@ export default {
 .todo-list-enter,
 .todo-list-leave-to {
   opacity: 0;
-  transform: translateX(30px);
+  transform: translateX(20px);
 }
 .todo-list-leave-active {
+  width: 100%;
+  position: absolute;
 }
 </style>
