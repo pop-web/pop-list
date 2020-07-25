@@ -209,12 +209,18 @@ export default {
   },
   methods: {
     // リストへ追加
-    addTodo() {
-      this.todos.push({
+    async addTodo() {
+      const params = {
         id: this.todoId++,
         comment: this.newTodo,
-        state: false
-      })
+        state: false,
+        createdAt: this.$firebase.firestore.FieldValue.serverTimestamp
+      }
+      try {
+        await this.$firestore.collection('todos').add(params)
+      } catch (e) {
+        alert(e)
+      }
       this.newTodo = ''
     },
     compListOpen() {
