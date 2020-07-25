@@ -189,7 +189,6 @@ export default {
       completeList: [],
       // 編集中のtodo
       editedTodo: null,
-      todoId: 0,
       newTodo: '',
       isCompleteOpen: false,
       searchWord: ''
@@ -205,16 +204,25 @@ export default {
     }
   },
   created() {
-    this.todoId = this.todos.length
+    this.$firestore
+      .collection('todos')
+      .orderBy('createdAt', 'asc')
+      .onSnapshot((roomsSnapShot) => {
+        roomsSnapShot.forEach((doc) => {
+          this.todos.push({
+            id: doc.id,
+            ...doc.data()
+          })
+        })
+      })
   },
   methods: {
     // リストへ追加
     async addTodo() {
       const params = {
-        id: this.todoId++,
         comment: this.newTodo,
         state: false,
-        createdAt: this.$firebase.firestore.FieldValue.serverTimestamp
+        createdAt: this.$firebase.firestore.FieldValue.serverTimestamp()
       }
       try {
         await this.$firestore.collection('todos').add(params)
