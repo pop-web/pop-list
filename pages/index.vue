@@ -110,6 +110,9 @@
                 v-todo-focus="todo == editedTodo"
                 class="input-edit hidden w-full p-4 relative"
                 type="text"
+                @blur="doneEdit(todo)"
+                @keyup.enter="doneEdit(todo)"
+                @keyup.esc="cancelEdit(todo)"
               />
             </div>
           </li>
@@ -189,6 +192,7 @@ export default {
       completeList: [],
       // 編集中のtodo
       editedTodo: null,
+      beforeEditCache: null,
       newTodo: '',
       isCompleteOpen: false,
       searchWord: ''
@@ -206,7 +210,7 @@ export default {
   created() {
     this.$firestore
       .collection('todos')
-      .orderBy('createdAt', 'asc')
+      .orderBy('createdAt', 'desc')
       .onSnapshot((roomsSnapShot) => {
         this.todos = []
         roomsSnapShot.forEach((doc) => {
@@ -232,22 +236,39 @@ export default {
       }
       this.newTodo = ''
     },
-    compListOpen() {
-      this.isCompleteOpen = !this.isCompleteOpen
+    removeTodo(todo) {
+      this.todos.splice(this.todos.indexOf(todo), 1)
     },
     editTodo(todo) {
-      // this.beforeEditCache = todo.comment
+      this.beforeEditCache = todo.comment
       this.editedTodo = todo
+    },
+    doneEdit(todo) {
+      if (!this.editedTodo) {
+        return
+      }
+      this.editedTodo = null
+      todo.comment = todo.comment.trim()
+      if (!todo.comment) {
+        this.removeTodo(todo)
+      }
+    },
+    cancelEdit(todo) {
+      this.editedTodo = null
+      todo.comment = this.beforeEditCache
+    },
+    cancelTodo(todo) {
+      todo.state = false
+      this.completeList.splice(this.completeList.indexOf(todo), 1)
+      this.todos.push(todo)
     },
     completeTodo(todo) {
       todo.state = true
       this.todos.splice(this.todos.indexOf(todo), 1)
       this.completeList.push(todo)
     },
-    cancelTodo(todo) {
-      todo.state = false
-      this.completeList.splice(this.completeList.indexOf(todo), 1)
-      this.todos.push(todo)
+    compListOpen() {
+      this.isCompleteOpen = !this.isCompleteOpen
     }
   }
 }
