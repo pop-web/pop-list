@@ -243,12 +243,20 @@ export default {
       this.beforeEditCache = todo.comment
       this.editedTodo = todo
     },
-    doneEdit(todo) {
+    async doneEdit(todo) {
       if (!this.editedTodo) {
         return
       }
       this.editedTodo = null
       todo.comment = todo.comment.trim()
+      try {
+        const res = this.$firestore.collection('todos').doc(todo.id)
+        await res.update({
+          comment: todo.comment
+        })
+      } catch (e) {
+        alert(e)
+      }
       if (!todo.comment) {
         this.removeTodo(todo)
       }
