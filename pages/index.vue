@@ -192,9 +192,13 @@ export default {
       completeList: [],
       // 編集中のtodo
       editedTodo: null,
+      // 編集前のキャッシュ
       beforeEditCache: null,
+      // 新しいToDo
       newTodo: '',
+      // 完了済みリストの表示非表示
       isCompleteOpen: false,
+      // 検索ワード
       searchWord: ''
     }
   },
@@ -236,8 +240,13 @@ export default {
       }
       this.newTodo = ''
     },
-    removeTodo(todo) {
-      this.todos.splice(this.todos.indexOf(todo), 1)
+    async removeTodo(todo) {
+      try {
+        const res = this.$firestore.collection('todos').doc(todo.id)
+        await res.delete()
+      } catch (e) {
+        alert(e)
+      }
     },
     editTodo(todo) {
       this.beforeEditCache = todo.comment
@@ -294,7 +303,7 @@ export default {
   left: 0.5rem;
 }
 .todo-list-item {
-  transition: all 0.5s;
+  transition: all 0.3s;
 }
 .todo-list-enter,
 .todo-list-leave-to {
