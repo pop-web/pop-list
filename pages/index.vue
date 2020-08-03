@@ -214,11 +214,25 @@ export default {
   created() {
     this.$firestore
       .collection('todos')
+      .where('state', '==', false)
       .orderBy('createdAt', 'desc')
       .onSnapshot((roomsSnapShot) => {
         this.todos = []
         roomsSnapShot.forEach((doc) => {
           this.todos.push({
+            id: doc.id,
+            ...doc.data()
+          })
+        })
+      })
+    this.$firestore
+      .collection('todos')
+      .where('state', '==', true)
+      .orderBy('createdAt', 'desc')
+      .onSnapshot((roomsSnapShot) => {
+        this.completeList = []
+        roomsSnapShot.forEach((doc) => {
+          this.completeList.push({
             id: doc.id,
             ...doc.data()
           })
@@ -279,10 +293,16 @@ export default {
       this.completeList.splice(this.completeList.indexOf(todo), 1)
       this.todos.push(todo)
     },
-    completeTodo(todo) {
-      todo.state = true
-      this.todos.splice(this.todos.indexOf(todo), 1)
-      this.completeList.push(todo)
+    async completeTodo(todo) {
+      try {
+        const res = this.$firestore.collection('todos').doc(todo.id)
+        await res.update({
+          state: true
+        })
+        this.todos = this.todos.filter((item) => item.id !== todo.id)
+      } catch (e) {
+        alert(e)
+      }
     },
     compListOpen() {
       this.isCompleteOpen = !this.isCompleteOpen
