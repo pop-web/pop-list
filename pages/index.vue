@@ -305,22 +305,29 @@ export default {
       this.editedTodo = null
       todo.comment = this.beforeEditCache
     },
-    cancelTodo(todo) {
-      todo.state = false
-      this.completeList.splice(this.completeList.indexOf(todo), 1)
-      this.todos.push(todo)
-    },
+    // 完了済みへ移動
     async completeTodo(todo) {
       try {
         const res = this.$firestore.collection('todos').doc(todo.id)
         await res.update({
           state: true
         })
-        this.todos = this.todos.filter((item) => item.id !== todo.id)
       } catch (e) {
         alert(e)
       }
     },
+    // ToDoリストに戻す
+    async cancelTodo(todo) {
+      try {
+        const res = this.$firestore.collection('todos').doc(todo.id)
+        await res.update({
+          state: false
+        })
+      } catch (e) {
+        alert(e)
+      }
+    },
+    // 完了済みの開閉
     compListOpen() {
       this.isCompleteOpen = !this.isCompleteOpen
     }
