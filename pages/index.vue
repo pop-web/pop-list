@@ -279,15 +279,11 @@ export default {
       }
     },
     filterKeyWord() {
-      const searchList = []
-      for (const i in this.todos) {
-        const todo = this.todos[i]
+      if (this.searchWord === '') return
+      const searchList = this.todos.filter((todo) => {
         // eslint-disable-next-line
-        if (todo.comment.indexOf(this.searchWord) !== -1) {
-          console.log(todo)
-          searchList.push(todo)
-        }
-      }
+        return todo.comment.indexOf(this.searchWord) !== -1
+      })
       return searchList
     }
   },
