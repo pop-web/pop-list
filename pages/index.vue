@@ -70,7 +70,7 @@
     </nav>
     <div class="flex m-5">
       <div class="w-full">
-        <form @submit.prevent="addTodo">
+        <form v-if="!searchListMode" @submit.prevent="addTodo">
           <input
             v-model="newTodo"
             class="bg-black bg-opacity-50 appearance-none rounded w-full p-4 text-white placeholder-gray-400 leading-tight focus:outline-none focus\:focus:shadow-outline"
@@ -78,123 +78,132 @@
             placeholder="＋ ToDoを追加…"
           />
         </form>
-        <transition-group name="todo-list" tag="ul">
-          <li
-            v-for="todo in filterKeyWord"
-            :key="todo.id"
-            class="mt-3"
-            :class="{ editing: todo == editedTodo, 'todo-list-item': true }"
-          >
-            <div
-              class="w-full bg-white hover:bg-gray-200 rounded inline-flex items-center cursor-pointer"
+        <template v-if="searchListMode">
+          <p class="text-lg font-bold text-red-600">
+            "{{ searchWord }}" を検索しています
+          </p>
+          <transition-group name="todo-list" tag="ul">
+            <li
+              v-for="todo in filterKeyWord"
+              :key="todo.id"
+              class="mt-3"
+              :class="{ editing: todo == editedTodo, 'todo-list-item': true }"
             >
-              <label
-                class="w-10 h-10 flex items-center justify-center cursor-pointer"
+              <div
+                class="w-full bg-white hover:bg-gray-200 rounded inline-flex items-center cursor-pointer"
               >
-                <input
-                  type="checkbox"
-                  class="leading-tight focus:outline-none cursor-pointer"
-                  :checked="todo.state"
-                  @click="completeTodo(todo)"
-                />
-              </label>
-              <button
-                type="button"
-                class="view-todo w-full p-4 text-left focus:outline-none focus:box-shadow"
-                @dblclick="editTodo(todo)"
-              >
-                {{ todo.comment }}
-              </button>
-              <input
-                v-model="todo.comment"
-                v-todo-focus="todo == editedTodo"
-                class="input-edit hidden w-full p-4 relative"
-                type="text"
-                @blur="doneEdit(todo)"
-                @keyup.enter="doneEdit(todo)"
-                @keyup.esc="cancelEdit(todo)"
-              />
-              <span class="p-4 text-gray-500" @click="removeTodo(todo)">
-                <svg
-                  class="fill-current w-4 h-4"
-                  xmlns="http://www.w3.org/2000/svg"
-                  viewBox="0 0 20 20"
+                <label
+                  class="w-10 h-10 flex items-center justify-center cursor-pointer"
                 >
-                  <path
-                    d="M6 2l2-2h4l2 2h4v2H2V2h4zM3 6h14l-1 14H4L3 6zm5 2v10h1V8H8zm3 0v10h1V8h-1z"
+                  <input
+                    type="checkbox"
+                    class="leading-tight focus:outline-none cursor-pointer"
+                    :checked="todo.state"
+                    @click="completeTodo(todo)"
                   />
-                </svg>
-              </span>
-            </div>
-          </li>
-        </transition-group>
-        <p>-------------</p>
-        <transition-group name="todo-list" tag="ul">
-          <li
-            v-for="todo in todos"
-            :key="todo.id"
-            class="mt-3"
-            :class="{ editing: todo == editedTodo, 'todo-list-item': true }"
-          >
-            <div
-              class="w-full bg-white hover:bg-gray-200 rounded inline-flex items-center cursor-pointer"
-            >
-              <label
-                class="w-10 h-10 flex items-center justify-center cursor-pointer"
-              >
-                <input
-                  type="checkbox"
-                  class="leading-tight focus:outline-none cursor-pointer"
-                  :checked="todo.state"
-                  @click="completeTodo(todo)"
-                />
-              </label>
-              <button
-                type="button"
-                class="view-todo w-full p-4 text-left focus:outline-none focus:box-shadow"
-                @dblclick="editTodo(todo)"
-              >
-                {{ todo.comment }}
-              </button>
-              <input
-                v-model="todo.comment"
-                v-todo-focus="todo == editedTodo"
-                class="input-edit hidden w-full p-4 relative"
-                type="text"
-                @blur="doneEdit(todo)"
-                @keyup.enter="doneEdit(todo)"
-                @keyup.esc="cancelEdit(todo)"
-              />
-              <span class="p-4 text-gray-500" @click="removeTodo(todo)">
-                <svg
-                  class="fill-current w-4 h-4"
-                  xmlns="http://www.w3.org/2000/svg"
-                  viewBox="0 0 20 20"
+                </label>
+                <button
+                  type="button"
+                  class="view-todo w-full p-4 text-left focus:outline-none focus:box-shadow"
+                  @dblclick="editTodo(todo)"
                 >
-                  <path
-                    d="M6 2l2-2h4l2 2h4v2H2V2h4zM3 6h14l-1 14H4L3 6zm5 2v10h1V8H8zm3 0v10h1V8h-1z"
-                  />
-                </svg>
-              </span>
-            </div>
-          </li>
-        </transition-group>
-        <div class="text-center mt-5">
-          <button
-            v-if="isCompleteList"
-            class="bg-black bg-opacity-50 rounded px-5 py-1 text-white inline-flex items-center"
-            @click="compListOpen"
-          >
-            <svg
-              class="fill-current w-5 h-5"
-              xmlns="http://www.w3.org/2000/svg"
-              viewBox="0 0 20 20"
+                  {{ todo.comment }}
+                </button>
+                <input
+                  v-model="todo.comment"
+                  v-todo-focus="todo == editedTodo"
+                  class="input-edit hidden w-full p-4 relative"
+                  type="text"
+                  @blur="doneEdit(todo)"
+                  @keyup.enter="doneEdit(todo)"
+                  @keyup.esc="cancelEdit(todo)"
+                />
+                <span class="p-4 text-gray-500" @click="removeTodo(todo)">
+                  <svg
+                    class="fill-current w-4 h-4"
+                    xmlns="http://www.w3.org/2000/svg"
+                    viewBox="0 0 20 20"
+                  >
+                    <path
+                      d="M6 2l2-2h4l2 2h4v2H2V2h4zM3 6h14l-1 14H4L3 6zm5 2v10h1V8H8zm3 0v10h1V8h-1z"
+                    />
+                  </svg>
+                </span>
+              </div>
+            </li>
+          </transition-group>
+        </template>
+        <template v-if="!searchListMode">
+          <transition-group name="todo-list" tag="ul">
+            <li
+              v-for="todo in todos"
+              :key="todo.id"
+              class="mt-3"
+              :class="{ editing: todo == editedTodo, 'todo-list-item': true }"
             >
-              <path v-if="isCompleteOpen" d="M9 13l1 1 6-6-2-1-4 4-4-4-2 1z" />
-              <path v-else d="M13 11l1-1-6-6-1 2 4 4-4 4 1 2 5-5z" />
-            </svg>
-            <span>完了済み</span>
-          </button>
+              <div
+                class="w-full bg-white hover:bg-gray-200 rounded inline-flex items-center cursor-pointer"
+              >
+                <label
+                  class="w-10 h-10 flex items-center justify-center cursor-pointer"
+                >
+                  <input
+                    type="checkbox"
+                    class="leading-tight focus:outline-none cursor-pointer"
+                    :checked="todo.state"
+                    @click="completeTodo(todo)"
+                  />
+                </label>
+                <button
+                  type="button"
+                  class="view-todo w-full p-4 text-left focus:outline-none focus:box-shadow"
+                  @dblclick="editTodo(todo)"
+                >
+                  {{ todo.comment }}
+                </button>
+                <input
+                  v-model="todo.comment"
+                  v-todo-focus="todo == editedTodo"
+                  class="input-edit hidden w-full p-4 relative"
+                  type="text"
+                  @blur="doneEdit(todo)"
+                  @keyup.enter="doneEdit(todo)"
+                  @keyup.esc="cancelEdit(todo)"
+                />
+                <span class="p-4 text-gray-500" @click="removeTodo(todo)">
+                  <svg
+                    class="fill-current w-4 h-4"
+                    xmlns="http://www.w3.org/2000/svg"
+                    viewBox="0 0 20 20"
+                  >
+                    <path
+                      d="M6 2l2-2h4l2 2h4v2H2V2h4zM3 6h14l-1 14H4L3 6zm5 2v10h1V8H8zm3 0v10h1V8h-1z"
+                    />
+                  </svg>
+                </span>
+              </div>
+            </li>
+          </transition-group>
+          <div class="text-center mt-5">
+            <button
+              v-if="isCompleteList"
+              class="bg-black bg-opacity-50 rounded px-5 py-1 text-white inline-flex items-center"
+              @click="compListOpen"
+            >
+              <svg
+                class="fill-current w-5 h-5"
+                xmlns="http://www.w3.org/2000/svg"
+                viewBox="0 0 20 20"
+              >
+                <path
+                  v-if="isCompleteOpen"
+                  d="M9 13l1 1 6-6-2-1-4 4-4-4-2 1z"
+                />
+                <path v-else d="M13 11l1-1-6-6-1 2 4 4-4 4 1 2 5-5z" />
+              </svg>
+              <span>完了済み</span>
+            </button>
+          </div>
           <template v-if="isCompleteOpen">
             <transition-group name="todo-list" tag="ul">
               <li
@@ -236,7 +245,7 @@
               </li>
             </transition-group>
           </template>
-        </div>
+        </template>
       </div>
     </div>
   </div>
@@ -285,6 +294,14 @@ export default {
         return todo.comment.indexOf(this.searchWord) !== -1
       })
       return searchList
+    },
+    searchListMode() {
+      if (this.searchWord === '') return false
+      if (this.searchWord) {
+        return true
+      } else {
+        return false
+      }
     }
   },
   created() {
