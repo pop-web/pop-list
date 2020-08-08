@@ -147,12 +147,19 @@
                 <label
                   class="w-10 h-10 flex items-center justify-center cursor-pointer"
                 >
-                  <input
-                    type="checkbox"
-                    class="leading-tight focus:outline-none cursor-pointer"
-                    :checked="todo.state"
-                    @click="completeTodo(todo)"
-                  />
+                  <span class="tooltip relative">
+                    <input
+                      type="checkbox"
+                      class="leading-tight focus:outline-none cursor-pointer"
+                      :checked="todo.state"
+                      @click="completeTodo(todo)"
+                    />
+                    <span
+                      class="tooltip-text text-xs bg-red-600 rounded text-white -mt-12 -ml-3"
+                    >
+                      完了済みにする
+                    </span>
+                  </span>
                 </label>
                 <button
                   type="button"
@@ -433,5 +440,34 @@ export default {
 .todo-list-leave-active {
   width: 100%;
   position: absolute;
+}
+.tooltip .tooltip-text {
+  opacity: 0;
+  visibility: hidden;
+  text-align: center;
+  padding: 2px 6px;
+  position: absolute;
+  top: 15px;
+  left: -2px;
+  display: block;
+  width: 9em;
+  z-index: 100;
+  transition: visibility 0.3s ease-out, opacity 0.3s ease-in-out;
+  filter: drop-shadow(0px 3px 5px rgba(0, 0, 0, 0.2));
+}
+.tooltip:hover .tooltip-text {
+  visibility: visible;
+  opacity: 1;
+}
+.tooltip:hover .tooltip-text::before {
+  content: '';
+  position: absolute;
+  bottom: -20px;
+  left: 20%;
+  width: 0;
+  height: 0;
+  margin-left: -10px;
+  border: 10px solid transparent;
+  border-top-color: #e53e3e;
 }
 </style>
