@@ -13,20 +13,6 @@
         </svg>
         <span class="font-semibold text-xl tracking-tight">To Do</span>
       </div>
-      <div class="block lg:hidden">
-        <button
-          class="flex items-center px-3 py-2 border rounded text-teal-200 border-teal-400 hover:text-white hover:border-white"
-        >
-          <svg
-            class="fill-current h-3 w-3"
-            viewBox="0 0 20 20"
-            xmlns="http://www.w3.org/2000/svg"
-          >
-            <title>Menu</title>
-            <path d="M0 3h20v2H0V3zm0 6h20v2H0V9zm0 6h20v2H0v-2z" />
-          </svg>
-        </button>
-      </div>
       <div class="relative">
         <label class="search absolute">
           <svg
@@ -42,8 +28,22 @@
         <input
           v-model="searchWord"
           type="text"
-          class="w-96 bg-white bg-opacity-50 appearance-none rounded p-2 pl-10 leading-tight focus:outline-none focus\:focus:shadow-outline"
+          class="w-full lg:w-96 bg-white bg-opacity-50 appearance-none rounded p-2 pl-10 leading-tight focus:outline-none focus\:focus:shadow-outline"
         />
+      </div>
+      <div class="block lg:hidden">
+        <button
+          class="flex items-center px-3 py-2 border rounded text-teal-200 border-teal-400 hover:text-white hover:border-white"
+        >
+          <svg
+            class="fill-current h-3 w-3"
+            viewBox="0 0 20 20"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <title>Menu</title>
+            <path d="M0 3h20v2H0V3zm0 6h20v2H0V9zm0 6h20v2H0v-2z" />
+          </svg>
+        </button>
       </div>
       <div class="w-full block lg:flex lg:items-center lg:w-auto">
         <div>
@@ -224,12 +224,19 @@
                   <label
                     class="w-10 h-10 flex items-center justify-center cursor-pointer"
                   >
-                    <input
-                      type="checkbox"
-                      class="leading-tight focus:outline-none cursor-pointer"
-                      :checked="todo.state"
-                      @click="cancelTodo(todo)"
-                    />
+                    <span class="tooltip relative">
+                      <input
+                        type="checkbox"
+                        class="leading-tight focus:outline-none cursor-pointer"
+                        :checked="todo.state"
+                        @click="cancelTodo(todo)"
+                      />
+                      <span
+                        class="tooltip-text text-xs bg-red-600 rounded text-white -mt-12 -ml-3"
+                      >
+                        未完了に戻す
+                      </span>
+                    </span>
                   </label>
                   <button
                     type="button"
