@@ -47,9 +47,9 @@
       </div>
       <div class="w-full block lg:flex lg:items-center lg:w-auto">
         <div>
-          <a
-            href="#responsive-header"
-            class="block mt-4 lg:mt-0 text-red-200 hover:text-white"
+          <button
+            class="block mt-4 lg:mt-0 text-red-200 hover:text-white focus:outline-none"
+            @click="drawer"
           >
             <svg
               class="fill-current w-5 h-5"
@@ -60,9 +60,15 @@
                 d="M4 7L2 4l2-2 3 2 1-1 1-3h2l1 3 2 1 2-2 2 2-2 3 1 1 3 1v2l-3 1-1 2 2 2-2 2-3-2-1 1-1 3H9l-1-3-2-1-2 2-2-2 2-3-1-1-3-1V9l3-1 1-2zm6 6a3 3 0 100-6 3 3 0 000 6z"
               />
             </svg>
-          </a>
+          </button>
         </div>
       </div>
+      <aside
+        class="transform top-0 right-0 w-64 bg-white fixed h-full overflow-auto ease-in-out transition-all duration-300 z-30"
+        :class="isOpen ? 'translate-x-0' : '-translate-x-full'"
+      >
+        ...
+      </aside>
     </nav>
     <div class="flex m-5">
       <div class="w-full">
@@ -286,7 +292,8 @@ export default {
       // 完了済みリストの表示非表示
       isCompleteOpen: false,
       // 検索ワード
-      searchWord: ''
+      searchWord: '',
+      isOpen: false
     }
   },
   computed: {
@@ -311,6 +318,14 @@ export default {
         return true
       } else {
         return false
+      }
+    }
+  },
+  watch: {
+    isOpen: {
+      handler(isOpen) {
+        if (isOpen) document.body.style.setProperty('overflow', 'hidden')
+        else document.body.style.removeProperty('overflow')
       }
     }
   },
@@ -416,6 +431,9 @@ export default {
     // 完了済みの開閉
     compListOpen() {
       this.isCompleteOpen = !this.isCompleteOpen
+    },
+    drawer() {
+      this.isOpen = !this.isOpen
     }
   }
 }
