@@ -121,12 +121,27 @@
 </template>
 <script>
 export default {
+  props: {
+    value: {
+      type: String,
+      default: ''
+    }
+  },
   data() {
     return {
-      // 検索ワード
-      searchWord: '',
       // メニューの開閉
       isOpen: false
+    }
+  },
+  computed: {
+    // 検索ワード
+    searchWord: {
+      get() {
+        return this.value
+      },
+      set(value) {
+        this.$emit('input', value)
+      }
     }
   },
   methods: {

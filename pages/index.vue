@@ -1,6 +1,6 @@
 <template>
   <div>
-    <TheNav />
+    <TheNav v-model="searchWord" />
     <div class="flex m-5">
       <div class="w-full">
         <form v-if="!searchListMode" @submit.prevent="addTodo">
@@ -226,7 +226,9 @@ export default {
       // 新しいToDo
       newTodo: '',
       // 完了済みリストの表示非表示
-      isCompleteOpen: false
+      isCompleteOpen: false,
+      // 検索ワード
+      searchWord: ''
     }
   },
   computed: {
