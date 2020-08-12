@@ -1,75 +1,6 @@
 <template>
   <div>
-    <nav
-      class="flex items-center justify-between flex-wrap bg-red-600 px-5 py-2"
-    >
-      <div class="flex items-center flex-shrink-0 text-white">
-        <svg
-          class="fill-current h-5 w-5 mr-2"
-          viewBox="0 0 20 20"
-          xmlns="http://www.w3.org/2000/svg"
-        >
-          <path d="M0 11l2-2 5 5L18 3l2 2L7 18z" />
-        </svg>
-        <span class="font-semibold text-xl tracking-tight">To Do</span>
-      </div>
-      <div class="block lg:hidden">
-        <button
-          class="flex items-center px-3 py-2 border rounded text-teal-200 border-teal-400 hover:text-white hover:border-white"
-        >
-          <svg
-            class="fill-current h-3 w-3"
-            viewBox="0 0 20 20"
-            xmlns="http://www.w3.org/2000/svg"
-          >
-            <title>Menu</title>
-            <path d="M0 3h20v2H0V3zm0 6h20v2H0V9zm0 6h20v2H0v-2z" />
-          </svg>
-        </button>
-      </div>
-      <div class="relative">
-        <label class="search absolute">
-          <svg
-            class="fill-current w-5 h-5 text-red-500"
-            xmlns="http://www.w3.org/2000/svg"
-            viewBox="0 0 20 20"
-          >
-            <path
-              d="M13 14a8 8 0 111-1l6 5-2 2-5-6zm-5 0A6 6 0 108 2a6 6 0 000 12z"
-            />
-          </svg>
-        </label>
-        <input
-          v-model="searchWord"
-          type="text"
-          class="w-full lg:w-96 bg-white bg-opacity-50 appearance-none rounded p-2 pl-10 leading-tight focus:outline-none focus\:focus:shadow-outline"
-        />
-      </div>
-      <div class="w-full block lg:flex lg:items-center lg:w-auto">
-        <div>
-          <button
-            class="block mt-4 lg:mt-0 text-red-200 hover:text-white focus:outline-none"
-            @click="drawer"
-          >
-            <svg
-              class="fill-current w-5 h-5"
-              xmlns="http://www.w3.org/2000/svg"
-              viewBox="0 0 20 20"
-            >
-              <path
-                d="M4 7L2 4l2-2 3 2 1-1 1-3h2l1 3 2 1 2-2 2 2-2 3 1 1 3 1v2l-3 1-1 2 2 2-2 2-3-2-1 1-1 3H9l-1-3-2-1-2 2-2-2 2-3-1-1-3-1V9l3-1 1-2zm6 6a3 3 0 100-6 3 3 0 000 6z"
-              />
-            </svg>
-          </button>
-        </div>
-      </div>
-      <aside
-        class="transform top-0 right-0 w-64 bg-white fixed h-full overflow-auto ease-in-out transition-all duration-300 z-30"
-        :class="isOpen ? 'translate-x-0' : 'translate-x-full'"
-      >
-        ...
-      </aside>
-    </nav>
+    <TheNav />
     <div class="flex m-5">
       <div class="w-full">
         <form v-if="!searchListMode" @submit.prevent="addTodo">
@@ -268,6 +199,8 @@
 </template>
 
 <script>
+import TheNav from '~/components/TheNav'
+
 export default {
   // v-todo-focusカスタムディレクティブ
   directives: {
@@ -276,6 +209,9 @@ export default {
         el.focus()
       }
     }
+  },
+  components: {
+    TheNav
   },
   data() {
     return {
@@ -290,10 +226,7 @@ export default {
       // 新しいToDo
       newTodo: '',
       // 完了済みリストの表示非表示
-      isCompleteOpen: false,
-      // 検索ワード
-      searchWord: '',
-      isOpen: false
+      isCompleteOpen: false
     }
   },
   computed: {
@@ -318,14 +251,6 @@ export default {
         return true
       } else {
         return false
-      }
-    }
-  },
-  watch: {
-    isOpen: {
-      handler(isOpen) {
-        if (isOpen) document.body.style.setProperty('overflow', 'hidden')
-        else document.body.style.removeProperty('overflow')
       }
     }
   },
@@ -431,9 +356,6 @@ export default {
     // 完了済みの開閉
     compListOpen() {
       this.isCompleteOpen = !this.isCompleteOpen
-    },
-    drawer() {
-      this.isOpen = !this.isOpen
     }
   }
 }
@@ -445,10 +367,6 @@ export default {
 }
 .editing .input-edit {
   display: block;
-}
-.search {
-  top: 0.5rem;
-  left: 0.5rem;
 }
 .todo-list-item {
   transition: all 0.3s;
