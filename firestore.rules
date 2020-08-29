@@ -25,18 +25,15 @@ service cloud.firestore {
             && request.resource.data[param] is timestamp
     }
 
-    match /users/{userId} {
-      allow get : if isAuth();
-      allow create: if isUserAuth(userId)
-                    && isNotEmpty("name");
-    }
-
     match /todos/{todosId} {
       allow read : if isAuth();
       allow create: if isAuth()
                   && isNotEmpty("comment")
                   && isNotEmpty("state")
                   && isTimeStamp("createdAt");
+      allow update: if isAuth()
+                  && isNotEmpty("comment");
+      allow delete : if isAuth();
     }
   }
 }

@@ -206,6 +206,7 @@
 import TheNav from '~/components/TheNav'
 
 export default {
+  middleware: ['checkAuth'],
   // v-todo-focusカスタムディレクティブ
   directives: {
     'todo-focus'(el, binding) {
@@ -297,9 +298,12 @@ export default {
         this.errorMessage = `何か入力してください`
         return
       }
+
+      const user = await this.$auth()
       const params = {
         comment: this.newTodo,
         state: false,
+        uid: user.uid,
         createdAt: this.$firebase.firestore.FieldValue.serverTimestamp()
       }
       try {

@@ -82,8 +82,8 @@
       class="transform top-0 right-0 w-64 bg-white fixed h-full overflow-auto ease-in-out transition-all duration-300 z-30"
       :class="isOpen ? 'translate-x-0' : 'translate-x-full'"
     >
-      <span
-        class="flex items-center p-4 hover:bg-red-600 hover:text-white"
+      <button
+        class="w-full flex items-center p-4 hover:bg-red-600 hover:text-white"
         @click="isOpen = false"
       >
         <span class="mr-2">
@@ -97,11 +97,11 @@
             />
           </svg>
         </span>
-        <span>設定</span></span
-      >
-      <span
-        class="flex items-center p-4 hover:bg-red-600 hover:text-white"
-        @click="isOpen = false"
+        <span>設定</span>
+      </button>
+      <button
+        class="w-full flex items-center p-4 hover:bg-red-600 hover:text-white"
+        @click="logout()"
       >
         <span class="mr-2">
           <svg
@@ -114,8 +114,8 @@
             />
           </svg>
         </span>
-        <span>ログアウト</span></span
-      >
+        <span>ログアウト</span>
+      </button>
     </aside>
   </nav>
 </template>
@@ -148,6 +148,13 @@ export default {
     // メニュードロワーの開閉
     drawer() {
       this.isOpen = !this.isOpen
+    },
+    // ログアウト
+    async logout() {
+      try {
+        await this.$fireAuth.signOut()
+        this.$router.push('/login')
+      } catch (e) {}
     }
   }
 }
