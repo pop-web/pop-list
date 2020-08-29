@@ -7,9 +7,13 @@
           <input
             v-model="newTodo"
             class="bg-black bg-opacity-50 appearance-none rounded w-full p-4 text-white placeholder-gray-400 leading-tight focus:outline-none focus\:focus:shadow-outline"
+            :class="{ 'border-red-500': errorMessage, border: errorMessage }"
             type="text"
             placeholder="＋ ToDoを追加…"
           />
+          <span v-show="errorMessage" class="text-red-500 text-sm ">
+            {{ errorMessage }}
+          </span>
         </form>
         <template v-if="searchListMode">
           <p class="text-lg font-bold text-red-600">
@@ -228,7 +232,9 @@ export default {
       // 完了済みリストの表示非表示
       isCompleteOpen: false,
       // 検索ワード
-      searchWord: ''
+      searchWord: '',
+      // エラーメッセージ
+      errorMessage: null
     }
   },
   computed: {
@@ -287,6 +293,10 @@ export default {
   methods: {
     // リストへ追加
     async addTodo() {
+      if (!this.newTodo) {
+        this.errorMessage = `何か入力してください`
+        return
+      }
       const params = {
         comment: this.newTodo,
         state: false,
@@ -298,6 +308,7 @@ export default {
         alert(e)
       }
       this.newTodo = ''
+      this.errorMessage = null
     },
     async removeTodo(todo) {
       try {
