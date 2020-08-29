@@ -298,7 +298,6 @@ export default {
         this.errorMessage = `何か入力してください`
         return
       }
-
       const user = await this.$auth()
       const params = {
         comment: this.newTodo,
