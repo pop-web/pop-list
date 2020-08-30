@@ -1,5 +1,5 @@
 <template>
-  <nav class="flex items-center justify-between flex-wrap bg-red-600 px-5 py-2">
+  <nav class="flex items-center justify-between bg-red-600 px-5 py-2">
     <div class="flex items-center flex-shrink-0 text-white">
       <svg
         class="fill-current h-5 w-5 mr-2"
@@ -10,21 +10,7 @@
       </svg>
       <span class="font-semibold text-xl tracking-tight">To Do</span>
     </div>
-    <div class="block lg:hidden">
-      <button
-        class="flex items-center px-3 py-2 border rounded text-teal-200 border-teal-400 hover:text-white hover:border-white"
-      >
-        <svg
-          class="fill-current h-3 w-3"
-          viewBox="0 0 20 20"
-          xmlns="http://www.w3.org/2000/svg"
-        >
-          <title>Menu</title>
-          <path d="M0 3h20v2H0V3zm0 6h20v2H0V9zm0 6h20v2H0v-2z" />
-        </svg>
-      </button>
-    </div>
-    <div class="relative">
+    <div class="relative w-3/5 lg:w-auto">
       <label class="search absolute">
         <svg
           class="fill-current w-5 h-5 text-red-500"
@@ -42,10 +28,10 @@
         class="w-full lg:w-96 bg-white bg-opacity-50 appearance-none rounded p-2 pl-10 leading-tight focus:outline-none focus\:focus:shadow-outline"
       />
     </div>
-    <div class="w-full block lg:flex lg:items-center lg:w-auto">
+    <div class="block flex items-center w-auto">
       <div>
         <button
-          class="block mt-4 lg:mt-0 text-red-200 hover:text-white focus:outline-none"
+          class="block text-red-200 hover:text-white focus:outline-none"
           @click="drawer"
         >
           <svg

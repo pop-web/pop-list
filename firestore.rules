@@ -28,7 +28,8 @@ service cloud.firestore {
     match /todos/{todosId} {
       allow read : if isAuth();
       allow create: if isAuth()
-                  && isNotEmpty("comment");
+                  && isNotEmpty("comment")
+                  && isTimeStamp("createdAt");
       allow update: if isAuth()
                   && isNotEmpty("comment");
       allow delete : if isAuth();
