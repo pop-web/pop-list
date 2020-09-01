@@ -122,7 +122,7 @@
           <div class="text-center mt-5">
             <button
               v-if="isCompleteList"
-              class="bg-black bg-opacity-50 rounded px-5 py-1 text-white inline-flex items-center"
+              class="bg-black bg-opacity-50 rounded px-5 py-1 text-white inline-flex items-center focus:outline-none"
               @click="compListOpen"
             >
               <svg
