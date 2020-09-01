@@ -148,54 +148,56 @@
               <span>完了済み</span>
             </button>
           </div>
-          <template v-if="isCompleteOpen">
-            <transition-group name="todo-list" tag="ul">
-              <li
-                v-for="todo in completeList"
-                :key="todo.id"
-                class="mt-3 todo-list-item"
-              >
-                <div
-                  class="w-full bg-white hover:bg-gray-200 rounded inline-flex items-center cursor-pointer"
+          <transition name="completed">
+            <template v-if="isCompleteOpen">
+              <transition-group name="todo-list" tag="ul">
+                <li
+                  v-for="todo in completeList"
+                  :key="todo.id"
+                  class="mt-3 todo-list-item"
                 >
-                  <label
-                    class="w-10 h-10 flex items-center justify-center cursor-pointer"
+                  <div
+                    class="w-full bg-white hover:bg-gray-200 rounded inline-flex items-center cursor-pointer"
                   >
-                    <span class="tooltip relative">
-                      <input
-                        type="checkbox"
-                        class="leading-tight focus:outline-none cursor-pointer"
-                        :checked="todo.state"
-                        @click="cancelTodo(todo)"
-                      />
-                      <span
-                        class="tooltip-text text-xs bg-red-600 rounded text-white -mt-12 -ml-3"
-                      >
-                        未完了に戻す
-                      </span>
-                    </span>
-                  </label>
-                  <button
-                    type="button"
-                    class="view-todo w-full p-4 text-left text-gray-600 focus:outline-none focus:box-shadow line-through"
-                  >
-                    {{ todo.comment }}
-                  </button>
-                  <span class="p-4 text-gray-500" @click="removeTodo(todo)">
-                    <svg
-                      class="fill-current w-4 h-4"
-                      xmlns="http://www.w3.org/2000/svg"
-                      viewBox="0 0 20 20"
+                    <label
+                      class="w-10 h-10 flex items-center justify-center cursor-pointer"
                     >
-                      <path
-                        d="M6 2l2-2h4l2 2h4v2H2V2h4zM3 6h14l-1 14H4L3 6zm5 2v10h1V8H8zm3 0v10h1V8h-1z"
-                      />
-                    </svg>
-                  </span>
-                </div>
-              </li>
-            </transition-group>
-          </template>
+                      <span class="tooltip relative">
+                        <input
+                          type="checkbox"
+                          class="leading-tight focus:outline-none cursor-pointer"
+                          :checked="todo.state"
+                          @click="cancelTodo(todo)"
+                        />
+                        <span
+                          class="tooltip-text text-xs bg-red-600 rounded text-white -mt-12 -ml-3"
+                        >
+                          未完了に戻す
+                        </span>
+                      </span>
+                    </label>
+                    <button
+                      type="button"
+                      class="view-todo w-full p-4 text-left text-gray-600 focus:outline-none focus:box-shadow line-through"
+                    >
+                      {{ todo.comment }}
+                    </button>
+                    <span class="p-4 text-gray-500" @click="removeTodo(todo)">
+                      <svg
+                        class="fill-current w-4 h-4"
+                        xmlns="http://www.w3.org/2000/svg"
+                        viewBox="0 0 20 20"
+                      >
+                        <path
+                          d="M6 2l2-2h4l2 2h4v2H2V2h4zM3 6h14l-1 14H4L3 6zm5 2v10h1V8H8zm3 0v10h1V8h-1z"
+                        />
+                      </svg>
+                    </span>
+                  </div>
+                </li>
+              </transition-group>
+            </template>
+          </transition>
         </template>
       </div>
     </div>
@@ -395,6 +397,14 @@ export default {
 .todo-list-leave-active {
   width: 100%;
   position: absolute;
+}
+.completed-enter,
+.completed-leave-to {
+  opacity: 0;
+}
+.completed-enter-active,
+.completed-leave-active {
+  transition: opacity 0.3s;
 }
 .tooltip .tooltip-text {
   opacity: 0;
