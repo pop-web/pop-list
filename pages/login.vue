@@ -1,7 +1,7 @@
 <template>
   <div class="flex justify-center">
     <div
-      class="flex items-center flex-col mt-20 w-72 p-5 bg-white shadow rounded"
+      class="flex items-center flex-col mt-20 w-84 p-5 bg-white shadow rounded"
     >
       <div class="flex items-center mb-5 flex-shrink-0 text-red-600">
         <svg

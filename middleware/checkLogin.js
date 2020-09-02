@@ -1,5 +1,12 @@
 export default async function({ redirect, app }) {
-  if (await app.$auth()) {
+  const res = await app.$auth()
+  if (res) {
+    const user = {
+      displayName: res.displayName,
+      uid: res.uid
+    }
+    // ユーザ情報をストアにセット
+    self.$nuxt.$store.dispatch('user/setInfo', user)
     // ログイン中だったらTOPページに遷移する
     redirect('/')
   }

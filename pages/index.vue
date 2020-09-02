@@ -196,6 +196,7 @@
 </template>
 
 <script>
+import { mapGetters } from 'vuex'
 import TheNav from '~/components/TheNav'
 import AddInput from '~/components/AddInput'
 
@@ -232,6 +233,7 @@ export default {
     }
   },
   computed: {
+    ...mapGetters('user', ['userInfo']),
     isCompleteList() {
       if (this.completeList.length) {
         return true
@@ -259,6 +261,7 @@ export default {
   created() {
     this.$firestore
       .collection('todos')
+      .where('uid', '==', this.userInfo.uid)
       .where('state', '==', false)
       .orderBy('createdAt', 'desc')
       .onSnapshot((roomsSnapShot) => {
@@ -272,6 +275,7 @@ export default {
       })
     this.$firestore
       .collection('todos')
+      .where('uid', '==', this.userInfo.uid)
       .where('state', '==', true)
       .orderBy('createdAt', 'desc')
       .onSnapshot((roomsSnapShot) => {

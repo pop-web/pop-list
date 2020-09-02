@@ -48,7 +48,7 @@ export default {
         this.errorBorder = true
         setTimeout(() => {
           this.tremble = false
-        }, 100)
+        }, 200)
         return
       } else {
         this.errorBorder = false

@@ -15,7 +15,8 @@
   "dependencies": {
     "core-js": "^2.6.11",
     "firebase": "^7.14.5",
-    "nuxt": "^2.0.0"
+    "nuxt": "^2.0.0",
+    "vuex": "^3.5.1"
   },
   "devDependencies": {
     "@firebase/testing": "^0.20.11",
