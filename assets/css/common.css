@@ -1,5 +1,5 @@
 /* 背景画像 */
-.body-class {
+body {
   background: url('~@/assets/images/bg.jpg') center center / cover no-repeat
     fixed;
 }
