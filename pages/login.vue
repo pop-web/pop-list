@@ -16,12 +16,20 @@
       <div class="w-full border-b pb-2 mb-4">
         <p class="text-center">ログイン</p>
       </div>
-      <form class="w-full" @submit.prevent="login">
+      <form class="w-full" @submit.prevent="login('google')">
         <button
           type="submit"
           class="w-full bg-red-600 py-3 px-10 text-white rounded focus:outline-none focus:shadow-outline border"
         >
           Googleでログイン
+        </button>
+      </form>
+      <form class="w-full" @submit.prevent="login('guest')">
+        <button
+          type="submit"
+          class="w-full bg-orange-500 py-3 px-10 mt-1 text-white rounded focus:outline-none focus:shadow-outline border"
+        >
+          ゲストログイン
         </button>
       </form>
     </div>
@@ -32,9 +40,17 @@
 export default {
   middleware: ['checkLogin'],
   methods: {
-    login() {
-      const provider = new this.$firebase.auth.GoogleAuthProvider()
-      this.$fireAuth.signInWithRedirect(provider)
+    async login(auth) {
+      if (auth === 'google') {
+        const provider = new this.$firebase.auth.GoogleAuthProvider()
+        this.$fireAuth.signInWithRedirect(provider)
+      } else if (auth === 'guest') {
+        await this.$fireAuth.signInWithEmailAndPassword(
+          'demo@popweb.dev',
+          'password'
+        )
+        location.reload()
+      }
     }
   }
 }

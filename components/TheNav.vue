@@ -32,15 +32,21 @@
       <div>
         <button
           class="block text-red-200 hover:text-white focus:outline-none"
+          @click="logout()"
+        >
+          <span class="text-sm">ログアウト</span>
+        </button>
+      </div>
+    </div>
+    <!-- <div class="block flex items-center w-auto">
+      <div>
+        <button
+          class="block text-red-200 hover:text-white focus:outline-none"
           @click="drawer"
         >
-          <svg
-            class="fill-current w-5 h-5"
-            xmlns="http://www.w3.org/2000/svg"
-            viewBox="0 0 20 20"
-          >
-            <path d="M0 3h20v2H0V3zm0 6h20v2H0V9zm0 6h20v2H0v-2z" />
-          </svg>
+          <div class="w-10">
+            <img :src="userInfo.photoURL" class="rounded-full" />
+          </div>
         </button>
       </div>
     </div>
@@ -102,15 +108,24 @@
         </span>
         <span>ログアウト</span>
       </button>
-    </aside>
+    </aside> -->
   </nav>
 </template>
 <script>
+import { mapGetters } from 'vuex'
 export default {
   props: {
     value: {
       type: String,
       default: ''
+    },
+    doingUnsubscribe: {
+      type: Function,
+      required: true
+    },
+    doneUnsubscribe: {
+      type: Function,
+      required: true
     }
   },
   data() {
@@ -120,6 +135,7 @@ export default {
     }
   },
   computed: {
+    ...mapGetters('user', ['userInfo']),
     // 検索ワード
     searchWord: {
       get() {
@@ -137,6 +153,8 @@ export default {
     },
     // ログアウト
     async logout() {
+      this.doingUnsubscribe()
+      this.doneUnsubscribe()
       try {
         await this.$fireAuth.signOut()
         this.$router.push('/login')

@@ -1,6 +1,10 @@
 <template>
   <div>
-    <TheNav v-model="searchWord" />
+    <TheNav
+      v-model="searchWord"
+      :doing-unsubscribe="doingUnsubscribe"
+      :done-unsubscribe="doneUnsubscribe"
+    />
     <div class="flex m-5">
       <div class="w-full">
         <template v-if="!searchListMode">
@@ -229,7 +233,9 @@ export default {
       // 完了済みリストの表示非表示
       isCompleteOpen: false,
       // 検索ワード
-      searchWord: ''
+      searchWord: '',
+      doingUnsubscribe: null,
+      doneUnsubscribe: null
     }
   },
   computed: {
@@ -259,7 +265,7 @@ export default {
     }
   },
   created() {
-    this.$firestore
+    this.doingUnsubscribe = this.$firestore
       .collection('todos')
       .where('uid', '==', this.userInfo.uid)
       .where('state', '==', false)
@@ -273,7 +279,7 @@ export default {
           })
         })
       })
-    this.$firestore
+    this.doneUnsubscribe = this.$firestore
       .collection('todos')
       .where('uid', '==', this.userInfo.uid)
       .where('state', '==', true)

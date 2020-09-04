@@ -3,7 +3,8 @@ export default async function({ redirect, app }) {
   if (res) {
     const user = {
       displayName: res.displayName,
-      uid: res.uid
+      uid: res.uid,
+      photoURL: res.photoURL
     }
     // ユーザ情報をストアにセット
     self.$nuxt.$store.dispatch('user/setInfo', user)
