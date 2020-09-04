@@ -1,7 +1,7 @@
 {
-  "name": "pop-list",
+  "name": "POP-LIST",
   "version": "1.0.0",
-  "description": "My stupendous Nuxt.js project",
+  "description": "シンプルで使いやすいToDoリストアプリ",
   "author": "pop",
   "private": true,
   "scripts": {

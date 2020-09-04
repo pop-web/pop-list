@@ -11,7 +11,7 @@
         >
           <path d="M0 11l2-2 5 5L18 3l2 2L7 18z" />
         </svg>
-        <span class="font-semibold text-3xl tracking-tight">To Do</span>
+        <span class="font-semibold text-3xl tracking-tight">POP LIST</span>
       </div>
       <div class="w-full border-b pb-2 mb-4">
         <p class="text-center">ログイン</p>

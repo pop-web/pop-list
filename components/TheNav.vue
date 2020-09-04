@@ -8,7 +8,7 @@
       >
         <path d="M0 11l2-2 5 5L18 3l2 2L7 18z" />
       </svg>
-      <span class="font-semibold text-xl tracking-tight">To Do</span>
+      <span class="font-semibold text-xl tracking-tight">POP LIST</span>
     </div>
     <div class="relative w-3/5 lg:w-auto">
       <label class="search absolute">
@@ -153,6 +153,7 @@ export default {
     },
     // ログアウト
     async logout() {
+      // リアルタイムアップデート停止
       this.doingUnsubscribe()
       this.doneUnsubscribe()
       try {
