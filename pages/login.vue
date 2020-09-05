@@ -36,6 +36,26 @@
           </div>
         </button>
       </form>
+      <form class="w-full mt-1" @submit.prevent="login('twitter')">
+        <button
+          type="submit"
+          class="w-full bg-blue-600 py-3 px-10 text-white rounded focus:outline-none focus:shadow-outline border"
+        >
+          <div class="flex items-center justify-center">
+            <svg
+              class="fill-current h-4 w-4 mr-2"
+              viewBox="0 0 512 512"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                fill="currentColor"
+                d="M459 152l1 13c0 139-106 299-299 299-59 0-115-17-161-47a217 217 0 00156-44c-47-1-85-31-98-72l19 1c10 0 19-1 28-3-48-10-84-52-84-103v-2c14 8 30 13 47 14A105 105 0 0136 67c51 64 129 106 216 110-2-8-2-16-2-24a105 105 0 01181-72c24-4 47-13 67-25-8 24-25 45-46 58 21-3 41-8 60-17-14 21-32 40-53 55z"
+              />
+            </svg>
+            <span>Twitterでログイン</span>
+          </div>
+        </button>
+      </form>
       <form class="w-full" @submit.prevent="login('guest')">
         <button
           type="submit"
@@ -55,6 +75,9 @@ export default {
     async login(auth) {
       if (auth === 'google') {
         const provider = new this.$firebase.auth.GoogleAuthProvider()
+        this.$fireAuth.signInWithRedirect(provider)
+      } else if (auth === 'twitter') {
+        const provider = new this.$firebase.auth.TwitterAuthProvider()
         this.$fireAuth.signInWithRedirect(provider)
       } else if (auth === 'guest') {
         await this.$fireAuth.signInWithEmailAndPassword(
