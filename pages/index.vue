@@ -372,11 +372,7 @@ export default {
 .todo-list-enter,
 .todo-list-leave-to {
   opacity: 0;
-  transform: translateY(10px);
-}
-.todo-list-leave-active {
-  width: 100%;
-  position: absolute;
+  transform: translateX(10px);
 }
 .completed-enter,
 .completed-leave-to {
