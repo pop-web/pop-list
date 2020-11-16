@@ -308,6 +308,10 @@ export default {
       this.editedTodo = todo
     },
     async doneEdit(todo) {
+      if (!todo.comment) {
+        this.removeTodo(todo)
+        return
+      }
       if (!this.editedTodo) {
         return
       }
@@ -320,9 +324,6 @@ export default {
         })
       } catch (e) {
         alert(e)
-      }
-      if (!todo.comment) {
-        this.removeTodo(todo)
       }
     },
     cancelEdit(todo) {
